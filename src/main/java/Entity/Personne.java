@@ -2,17 +2,21 @@ package Entity;
 
 public class Personne {
 
-    private int i;
+    private Integer id;
     private String nom;
     private String prenom;
     private String evaluation;
+    private Personne pere;
 
-    public int getI() {
-        return i;
+    public Personne() {
     }
 
-    public void setI(int i) {
-        this.i = i;
+    public Integer getI() {
+        return id;
+    }
+
+    public void setI(Integer i) {
+        this.id = i;
     }
 
     public String getNom() {
@@ -39,6 +43,7 @@ public class Personne {
         this.evaluation = evaluation;
     }
 
+    public Personne getPere() { return pere; }
 
-
+    public void setPere(Personne pere) { this.pere = pere; }
 }
