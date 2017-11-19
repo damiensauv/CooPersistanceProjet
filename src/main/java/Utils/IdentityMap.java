@@ -4,18 +4,14 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-class IdentityMap<T> {
-    private Map<String, WeakReference<T>> map;
+public class IdentityMap<T> {
+    private Map<Integer, WeakReference<T>> map;
 
-    IdentityMap() {
-        map = new HashMap<String, WeakReference<T>>();
+    public IdentityMap() {
+        map = new HashMap<Integer, WeakReference<T>>();
     }
 
-    void delete(String id) {
-        map.remove(id);
-    }
-
-    public T get(String id) {
+    public T get(Integer id) {
         WeakReference<T> ref = map.get(id);
         if (ref == null)
             return null;
@@ -27,8 +23,11 @@ class IdentityMap<T> {
         return obj;
     }
 
-    void put(String id, T obj) {
+    void put(Integer id, T obj) {
         map.put(id, new WeakReference<T>(obj));
     }
 
+    void delete(Integer id) {
+        map.remove(id);
+    }
 }

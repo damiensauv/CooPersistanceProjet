@@ -2,9 +2,10 @@ package Persistance.Mapper;
 
 public abstract class DataMapper<T> {
 
-    public DataMapper() {}
+    public DataMapper() {
+    }
 
-    abstract T find(T o);
+    abstract T find(Integer id);
 
     abstract void insert(T o);
 
