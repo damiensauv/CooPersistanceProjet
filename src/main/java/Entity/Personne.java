@@ -11,11 +11,11 @@ public class Personne {
     public Personne() {
     }
 
-    public Integer getI() {
+    public Integer getId() {
         return id;
     }
 
-    public void setI(Integer i) {
+    public void setId(Integer i) {
         this.id = i;
     }
 
