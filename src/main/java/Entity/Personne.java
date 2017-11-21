@@ -1,14 +1,25 @@
 package Entity;
 
-public class Personne {
+import Utils.IDomainObject;
+import Utils.Visitor;
+import Utils.Observeur;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Personne implements IDomainObject {
 
     private Integer id;
     private String nom;
     private String prenom;
     private String evaluation;
     private Personne pere;
+    private List<Observeur> obs;
 
     public Personne() {
+        obs = new ArrayList<Observeur>();
     }
 
     public Integer getId() {
@@ -46,4 +57,17 @@ public class Personne {
     public Personne getPere() { return pere; }
 
     public void setPere(Personne pere) { this.pere = pere; }
+
+    public void add(Observeur o) {
+        obs.add(o);
+    }
+
+
+    public void notifier() {
+
+    }
+
+    public void accepter(Visitor v) {
+        v.visiter(this);
+    }
 }

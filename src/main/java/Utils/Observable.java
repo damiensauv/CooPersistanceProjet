@@ -1,7 +1,7 @@
 package Utils;
 
 public interface Observable {
-    void add(Observer o);
+    void add(Observeur o);
 
     void notifier();
 }
