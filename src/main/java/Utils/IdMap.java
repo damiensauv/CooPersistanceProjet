@@ -4,10 +4,10 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IdentityMap<T> {
+public class IdMap<T> {
     private Map<Integer, WeakReference<T>> map;
 
-    public IdentityMap() {
+    public IdMap() {
         map = new HashMap<Integer, WeakReference<T>>();
     }
 

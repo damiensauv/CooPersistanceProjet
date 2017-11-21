@@ -1,5 +1,5 @@
 package Utils;
 
-public interface Observer {
+public interface Observeur {
     void action(IDomainObject o);
 }
