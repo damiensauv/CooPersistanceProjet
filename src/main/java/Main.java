@@ -1,12 +1,27 @@
-import java.sql.SQLException;
+import javax.swing.*;
+
+import Frames.MaFrameConnexion;
+
+import java.awt.*;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-
-//        Connection c = Oracle.getInstance();
+	public static void main(String[] args) {
 
 
-    }
 
+	}
+	
+	public void launchUi(){
+
+		MaFrameConnexion laframe = new MaFrameConnexion();
+
+		laframe.setLocationRelativeTo(null);
+		laframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		laframe.setVisible(true);
+		laframe.setSize(1000, 300);
+		
+	}
+	
+	
 }
