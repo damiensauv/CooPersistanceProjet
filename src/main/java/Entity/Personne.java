@@ -28,6 +28,7 @@ public class Personne implements IDomainObject {
 
     public void setId(Integer i) {
         this.id = i;
+        notifier();
     }
 
     public String getNom() {
@@ -36,6 +37,7 @@ public class Personne implements IDomainObject {
 
     public void setNom(String nom) {
         this.nom = nom;
+        notifier();
     }
 
     public String getPrenom() {
@@ -44,6 +46,7 @@ public class Personne implements IDomainObject {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+        notifier();
     }
 
     public String getEvaluation() {
@@ -52,11 +55,14 @@ public class Personne implements IDomainObject {
 
     public void setEvaluation(String evaluation) {
         this.evaluation = evaluation;
+        notifier();
     }
 
     public Personne getPere() { return pere; }
 
-    public void setPere(Personne pere) { this.pere = pere; }
+    public void setPere(Personne pere) { this.pere = pere;
+        notifier();
+    }
 
     public void add(Observeur o) {
         obs.add(o);
@@ -64,7 +70,8 @@ public class Personne implements IDomainObject {
 
 
     public void notifier() {
-
+        for (Observeur o : obs)
+            o.action(this);
     }
 
     public void accepter(Visitor v) {
