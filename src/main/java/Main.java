@@ -1,6 +1,7 @@
 
 import javax.swing.*;
 
+import Entity.IPersonne;
 import Frames.MaFrameConnexion;
 
 import java.awt.*;
@@ -14,24 +15,20 @@ import java.sql.SQLException;
 import Entity.Personne;
 import Oracle.Oracle;
 import Persistance.Mapper.PersonneMapper;
+import Persistance.UOW.UnitOfWork;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 
-        Personne p;
+		IPersonne p;
         PersonneMapper pm = PersonneMapper.getInstance();
-
-        p = pm.find(1);
-        System.out.println(p.getPrenom());
+		launchUi();
 
 
 	}
 	
-	public void launchUi(){
-
-
-
+	public static void launchUi(){
 
 		MaFrameConnexion laframe = new MaFrameConnexion();
 

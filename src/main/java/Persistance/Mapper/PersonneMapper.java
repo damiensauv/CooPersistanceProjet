@@ -44,7 +44,10 @@ public class PersonneMapper extends DataMapper<IPersonne> {
         p.setEvaluation(rs.getString(4));
 
         PersonneFactory fp = new PersonneFactory(rs.getInt(5));
-        p.setPere(new VirtualProxyBuilder<IPersonne>(IPersonne.class, fp).getProxy());
+        IPersonne pere = new VirtualProxyBuilder<IPersonne>(IPersonne.class, fp).getProxy();
+
+
+        p.setPere(pere);
 
         return p;
     }
@@ -95,8 +98,8 @@ public class PersonneMapper extends DataMapper<IPersonne> {
         preparedStatement.setString(4, personne.getEvaluation());
         preparedStatement.setInt(5, personne.getId());
         preparedStatement.executeUpdate();
+        connection.commit();
     }
-
 
     public Connection getConnection() {
         return connection;

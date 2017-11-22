@@ -1,9 +1,9 @@
 package Frames;
 
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import Entity.IPersonne;
+import Persistance.Mapper.PersonneMapper;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,6 +26,34 @@ public class MaFrameConnexion extends JFrame {
 	private JLabel label;
 	private JTextField champtexte, champeval;
 	private JList<DefaultListModel> listenoms;
+
+	public void createListe(JLabel labeleval, IPersonne p){
+		DefaultListModel listModel = new DefaultListModel();
+		java.util.List<IPersonne> pchild = p.getFils();
+
+		for (IPersonne pc : pchild)
+		{
+			String n = "";
+			try{
+				n = pc.getPrenom();
+			}catch (Exception e){}
+
+			listModel.addElement(n);
+		}
+
+		listenoms = new JList(listModel);
+
+		listenoms.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				labeleval.setText("Evaluation de : "
+						+ listenoms.getSelectedValue());
+
+			}
+		});
+	}
 
 	public MaFrameConnexion() {
 
@@ -74,23 +102,7 @@ public class MaFrameConnexion extends JFrame {
 
 		add(cardpanels);
 
-		DefaultListModel listModel = new DefaultListModel();
-		listModel.addElement("Jesus");
-		listModel.addElement("Marie");
-		listModel.addElement("Joseph");
 
-		listenoms = new JList(listModel);
-
-		listenoms.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				labeleval.setText("Evaluation de : "
-						+ listenoms.getSelectedValue());
-
-			}
-		});
 
 		// Test qui constate le bon remplissage de la zone de saisie pour
 		// déverrouiller le bouton OK
@@ -150,13 +162,21 @@ public class MaFrameConnexion extends JFrame {
 
 				String idUser = champtexte.getText();
 
+				IPersonne p = PersonneMapper.getInstance().find(Integer.parseInt(idUser));
+				if (p == null) {
+					System.out.println("Not IN DATABASE, So close");
+					dispose();
+					return;
+				}
+				createListe(labeleval, p);
+
 				// LABEL VOUS
 				gbc.gridx = 0;
 				gbc.gridwidth = 2;
 				gbc.gridheight = 2;
 				gbc.gridy = 0;
 				gbc.fill = GridBagConstraints.BOTH;
-				panelmetier.add(new JLabel("Vous : " + idUser), gbc);
+				panelmetier.add(new JLabel("Vous : " + p.getId()), gbc);
 
 				// LABEL VOTRE PERE
 				gbc.gridx = 0;
@@ -164,7 +184,32 @@ public class MaFrameConnexion extends JFrame {
 				gbc.gridheight = 2;
 				gbc.gridy = 5;
 				gbc.fill = GridBagConstraints.BOTH;
-				panelmetier.add(new JLabel("Votre père :        "), gbc);
+
+				String nom = "";
+				String prenom = "";
+				try {
+					if (p.getPere() != null) {
+						nom = p.getPere().getNom();
+						prenom = p.getPere().getPrenom();
+
+						if (nom == null)
+							nom = "";
+						if (prenom == null)
+							prenom = "";
+					}
+				}catch (Exception ignored){
+
+				}
+
+				panelmetier.add(new JLabel("Votre père : " + nom + " " + prenom), gbc);
+
+
+				String eval = "";
+				try {
+					eval = p.getEvaluation();
+				}catch (Exception ignored){
+
+				}
 
 				// LABEL VOTRE EVALUATION
 				gbc.gridx = 0;
@@ -172,7 +217,7 @@ public class MaFrameConnexion extends JFrame {
 				gbc.gridheight = 2;
 				gbc.gridy = 10;
 				gbc.fill = GridBagConstraints.BOTH;
-				panelmetier.add(new JLabel("Votre évaluation :  "), gbc);
+				panelmetier.add(new JLabel("Votre évaluation :  " + eval), gbc);
 
 				// BOUTON ANNULER
 				gbc.gridx = 5;
