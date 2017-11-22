@@ -19,10 +19,12 @@ public class MaFrameConnexion extends JFrame {
     private JLabel label;
     private JTextField champtexte, champeval;
     private JList<DefaultListModel> listenoms;
+    private java.util.List<IPersonne> pchild;
+    private Integer current;
 
     public void createListe(JLabel labeleval, IPersonne p) {
         DefaultListModel listModel = new DefaultListModel();
-        java.util.List<IPersonne> pchild = p.getFils();
+        pchild = p.getFils();
 
         for (IPersonne pc : pchild) {
             String n = "";
@@ -41,8 +43,10 @@ public class MaFrameConnexion extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
-                labeleval.setText("Evaluation de : "
-                        + listenoms.getSelectedValue());
+                // get String from e et search in pchild pour le current
+
+
+                labeleval.setText("Evaluation de : " + listenoms.getSelectedValue());
 
             }
         });
@@ -126,8 +130,8 @@ public class MaFrameConnexion extends JFrame {
         boutonValider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ferme la fenêtre.
-                dispose();
+
+                // TODO : VALIDATION recup le tex champtexte et le set au current child puis call UOW
 
             }
         });
