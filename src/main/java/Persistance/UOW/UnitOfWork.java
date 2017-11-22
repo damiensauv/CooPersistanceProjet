@@ -7,6 +7,7 @@ import Utils.Visitor;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+import Oracle.Oracle;
 
 public class UnitOfWork implements Observeur {
 
@@ -33,6 +34,7 @@ public class UnitOfWork implements Observeur {
         for (IDomainObject obj : dirty) {
             v.visiter(obj);
         }
+        Oracle.getInstance().commit();
         dirty.clear();
     }
 

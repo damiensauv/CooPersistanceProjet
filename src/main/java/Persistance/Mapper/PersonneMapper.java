@@ -98,7 +98,6 @@ public class PersonneMapper extends DataMapper<IPersonne> {
         preparedStatement.setString(4, personne.getEvaluation());
         preparedStatement.setInt(5, personne.getId());
         preparedStatement.executeUpdate();
-        connection.commit();
     }
 
     public Connection getConnection() {
