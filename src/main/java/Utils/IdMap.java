@@ -23,7 +23,7 @@ public class IdMap<T> {
         return obj;
     }
 
-    void put(Integer id, T obj) {
+    public void put(Integer id, T obj) {
         map.put(id, new WeakReference<T>(obj));
     }
 

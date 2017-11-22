@@ -1,4 +1,5 @@
 package Persistance.UOW;
 
-public interface Factory {
+public interface Factory<T> {
+    T create();
 }

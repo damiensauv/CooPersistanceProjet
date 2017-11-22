@@ -9,17 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Personne implements IDomainObject {
+public class Personne implements IPersonne {
 
     private Integer id;
     private String nom;
     private String prenom;
     private String evaluation;
-    private Personne pere;
+    private IPersonne pere;
+    private List<IPersonne> fils;
     private List<Observeur> obs;
 
     public Personne() {
         obs = new ArrayList<Observeur>();
+        fils = new ArrayList<IPersonne>();
     }
 
     public Integer getId() {
@@ -58,9 +60,9 @@ public class Personne implements IDomainObject {
         notifier();
     }
 
-    public Personne getPere() { return pere; }
+    public IPersonne getPere() { return pere; }
 
-    public void setPere(Personne pere) { this.pere = pere;
+    public void setPere(IPersonne pere) { this.pere = pere;
         notifier();
     }
 
@@ -76,5 +78,13 @@ public class Personne implements IDomainObject {
 
     public void accepter(Visitor v) {
         v.visiter(this);
+    }
+
+    public List<IPersonne> getFils() {
+        return fils;
+    }
+
+    public void setFils(List<IPersonne> fils) {
+        this.fils = fils;
     }
 }
