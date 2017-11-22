@@ -1,7 +1,6 @@
 package Persistance.UOW;
 
 import Entity.IPersonne;
-import Entity.Personne;
 import Persistance.Mapper.PersonneMapper;
 import Utils.Visitor;
 

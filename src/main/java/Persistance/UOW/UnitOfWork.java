@@ -1,5 +1,6 @@
 package Persistance.UOW;
 
+import Oracle.Oracle;
 import Utils.IDomainObject;
 import Utils.Observeur;
 import Utils.Visitor;
@@ -7,7 +8,6 @@ import Utils.Visitor;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
-import Oracle.Oracle;
 
 public class UnitOfWork implements Observeur {
 

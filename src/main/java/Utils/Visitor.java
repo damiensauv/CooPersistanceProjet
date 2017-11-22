@@ -1,7 +1,6 @@
 package Utils;
 
 import Entity.IPersonne;
-import Entity.Personne;
 
 import java.sql.SQLException;
 
