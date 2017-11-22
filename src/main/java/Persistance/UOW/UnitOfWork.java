@@ -4,6 +4,7 @@ import Utils.IDomainObject;
 import Utils.Observeur;
 import Utils.Visitor;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class UnitOfWork implements Observeur {
         dirty.add(obj);
     }
 
-    public void commit() {
+    public void commit() throws SQLException {
         Visitor v = new Committer();
         for (IDomainObject obj : dirty) {
             v.visiter(obj);

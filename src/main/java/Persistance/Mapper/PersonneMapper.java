@@ -13,16 +13,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PersonneMapper extends DataMapper<Personne> {
+public class PersonneMapper extends DataMapper<IPersonne> {
 
     private static PersonneMapper instance = null;
     private Connection connection;
-    private IdMap<Personne> idMap;
+    private IdMap<IPersonne> idMap;
 
     private PersonneMapper() {
-        // try catch
-        connection = Oracle.getInstance();
-        idMap = new IdMap<Personne>();
+        try {
+            connection = Oracle.getInstance();
+            idMap = new IdMap<IPersonne>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static PersonneMapper getInstance() {
@@ -35,25 +38,24 @@ public class PersonneMapper extends DataMapper<Personne> {
     private Personne createPersonne(ResultSet rs) throws SQLException {
 
         Personne p = new Personne();
-        p.setId(Integer.getInteger(rs.getString(1)));
+        p.setId(rs.getInt(1));
         p.setNom(rs.getString(2));
         p.setPrenom(rs.getString(3));
         p.setEvaluation(rs.getString(4));
 
-        PersonneFactory fp = new PersonneFactory(5);
+        PersonneFactory fp = new PersonneFactory(rs.getInt(5));
         p.setPere(new VirtualProxyBuilder<IPersonne>(IPersonne.class, fp).getProxy());
 
         return p;
     }
 
-    public Personne find(Integer id) {
+    public IPersonne find(Integer id) {
         // check if personne already exist
-        Personne p = idMap.get(id);
-        if (p != null){
+        IPersonne p = idMap.get(id);
+        if (p != null) {
             System.out.println("Get from IdMap");
             return p;
         }
-
 
         String req = "SELECT id, nom, prenom, eval, id_pere FROM coo_tp_personne WHERE id=?";
         try {
@@ -67,14 +69,14 @@ public class PersonneMapper extends DataMapper<Personne> {
 
             p = this.createPersonne(rs);
             // get all childs
-            PreparedStatement ps2= connection.prepareStatement("select id, nom, prenom, eval, id_pere from coo_tp_personne where id_pere = ?");
+            PreparedStatement ps2 = connection.prepareStatement("select id, nom, prenom, eval, id_pere from coo_tp_personne where id_pere = ?");
             ps2.setInt(1, id);
             rs = ps2.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 p.getFils().add(new VirtualProxyBuilder<IPersonne>(IPersonne.class, new PersonneFactory(rs.getInt("id"))).getProxy());
             }
-            idMap.put(id,p);
+            idMap.put(id, p);
             p.add(UnitOfWork.getInstance());
 
             return p;
@@ -84,17 +86,17 @@ public class PersonneMapper extends DataMapper<Personne> {
         }
     }
 
-    public void insert(Personne o) {
-
+    public void update(IPersonne personne) throws SQLException {
+        String query = "UPDATE coo_tp_personne SET nom=?, prenom=?, id_pere=?, eval=? WHERE id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, personne.getNom());
+        preparedStatement.setString(2, personne.getPrenom());
+        preparedStatement.setInt(3, personne.getPere().getId());
+        preparedStatement.setString(4, personne.getEvaluation());
+        preparedStatement.setInt(5, personne.getId());
+        preparedStatement.executeUpdate();
     }
 
-    public void delete(Personne o) {
-
-    }
-
-    public void update(Personne o) {
-
-    }
 
     public Connection getConnection() {
         return connection;

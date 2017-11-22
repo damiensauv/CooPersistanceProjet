@@ -1,10 +1,9 @@
 package Entity;
 
-import Utils.IDomainObject;
-import Utils.Visitor;
 import Utils.Observeur;
+import Utils.Visitor;
 
-
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +59,12 @@ public class Personne implements IPersonne {
         notifier();
     }
 
-    public IPersonne getPere() { return pere; }
+    public IPersonne getPere() {
+        return pere;
+    }
 
-    public void setPere(IPersonne pere) { this.pere = pere;
+    public void setPere(IPersonne pere) {
+        this.pere = pere;
         notifier();
     }
 
@@ -76,7 +78,7 @@ public class Personne implements IPersonne {
             o.action(this);
     }
 
-    public void accepter(Visitor v) {
+    public void accepter(Visitor v) throws SQLException {
         v.visiter(this);
     }
 

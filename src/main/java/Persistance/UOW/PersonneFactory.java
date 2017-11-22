@@ -1,7 +1,6 @@
 package Persistance.UOW;
 
 import Entity.IPersonne;
-import Entity.Personne;
 import Persistance.Mapper.PersonneMapper;
 
 public class PersonneFactory implements Factory<IPersonne> {
@@ -12,7 +11,8 @@ public class PersonneFactory implements Factory<IPersonne> {
         this.id = id;
     }
 
-    public Personne create() {
-        return PersonneMapper.getInstance().find(id);
+    public IPersonne create() {
+        IPersonne a = PersonneMapper.getInstance().find(this.id);
+        return a;
     }
 }
