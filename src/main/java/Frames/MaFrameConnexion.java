@@ -22,7 +22,7 @@ public class MaFrameConnexion extends JFrame {
     private JTextField champtexte, champeval;
     private JList<DefaultListModel> listenoms;
     private java.util.List<IPersonne> pchild;
-    private Integer current;
+    private Integer current = null;
     private IPersonne p;
 
     public void createListe(final JLabel labeleval, IPersonne p) {
@@ -43,7 +43,6 @@ public class MaFrameConnexion extends JFrame {
 
         listenoms.addListSelectionListener(new ListSelectionListener() {
 
-            @Override
             public void valueChanged(ListSelectionEvent e) {
                 current = listenoms.getSelectedIndex();
 
@@ -130,10 +129,10 @@ public class MaFrameConnexion extends JFrame {
 
         // ActionListener du bouton valider
         boutonValider.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
 
-
+            	if (current != null)
+            	{
                 System.out.println("VAlidation ==> " + champeval.getText() + " Sur ==> " + current);
 
                 IPersonne fils = p.getFils().get(current);
@@ -148,13 +147,14 @@ public class MaFrameConnexion extends JFrame {
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
+            	}else
+            		JOptionPane.showMessageDialog(panelmetier, "Selectionnez un nom dans la liste.");
 
             }
         });
 
         // ActionListener du bouton annuler
         boutonAnnuler.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 // Ferme la fenêtre.
                 dispose();
@@ -164,7 +164,6 @@ public class MaFrameConnexion extends JFrame {
 
         // ActionListener du bouton OK
         boutonOK.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 // Ferme la fenêtre.
                 // dispose();
