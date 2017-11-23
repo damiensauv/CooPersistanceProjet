@@ -25,7 +25,7 @@ public class MaFrameConnexion extends JFrame {
     private Integer current;
     private IPersonne p;
 
-    public void createListe(JLabel labeleval, IPersonne p) {
+    public void createListe(final JLabel labeleval, IPersonne p) {
         DefaultListModel listModel = new DefaultListModel();
         pchild = p.getFils();
 
@@ -143,6 +143,8 @@ public class MaFrameConnexion extends JFrame {
                 try {
                     PersonneMapper.getInstance().update(fils);
                     UnitOfWork.getInstance().commit();
+                    JOptionPane.showMessageDialog(panelmetier, "Commit OK !");
+
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
