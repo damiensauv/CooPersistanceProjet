@@ -2,6 +2,7 @@ package Frames;
 
 import Entity.IPersonne;
 import Persistance.Mapper.PersonneMapper;
+import Persistance.UOW.UnitOfWork;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -11,6 +12,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class MaFrameConnexion extends JFrame {
 
@@ -21,6 +23,7 @@ public class MaFrameConnexion extends JFrame {
     private JList<DefaultListModel> listenoms;
     private java.util.List<IPersonne> pchild;
     private Integer current;
+    private IPersonne p;
 
     public void createListe(JLabel labeleval, IPersonne p) {
         DefaultListModel listModel = new DefaultListModel();
@@ -42,8 +45,7 @@ public class MaFrameConnexion extends JFrame {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-
-                // get String from e et search in pchild pour le current
+                current = listenoms.getSelectedIndex();
 
 
                 labeleval.setText("Evaluation de : " + listenoms.getSelectedValue());
@@ -131,7 +133,19 @@ public class MaFrameConnexion extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // TODO : VALIDATION recup le tex champtexte et le set au current child puis call UOW
+
+                System.out.println("VAlidation ==> " + champeval.getText() + " Sur ==> " + current);
+
+                IPersonne fils = p.getFils().get(current);
+
+                fils.setEvaluation(champeval.getText());
+
+                try {
+                    PersonneMapper.getInstance().update(fils);
+                    UnitOfWork.getInstance().commit();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
 
             }
         });
@@ -158,7 +172,7 @@ public class MaFrameConnexion extends JFrame {
 
                 String idUser = champtexte.getText();
 
-                IPersonne p = PersonneMapper.getInstance().find(Integer.parseInt(idUser));
+                p = PersonneMapper.getInstance().find(Integer.parseInt(idUser));
                 if (p == null) {
                     System.out.println("Not IN DATABASE, So close");
                     dispose();
@@ -166,13 +180,27 @@ public class MaFrameConnexion extends JFrame {
                 }
                 createListe(labeleval, p);
 
+                String nom = "";
+                String prenom = "";
+                try {
+                    nom = p.getNom();
+                    prenom = p.getPrenom();
+
+                    if (nom == null)
+                        nom = "";
+                    if (prenom == null)
+                        prenom = "";
+                } catch (Exception ignored) {
+
+                }
+
                 // LABEL VOUS
                 gbc.gridx = 0;
                 gbc.gridwidth = 2;
                 gbc.gridheight = 2;
                 gbc.gridy = 0;
                 gbc.fill = GridBagConstraints.BOTH;
-                panelmetier.add(new JLabel("Vous : " + p.getId()), gbc);
+                panelmetier.add(new JLabel("Vous : " + nom + " " + prenom), gbc);
 
                 // LABEL VOTRE PERE
                 gbc.gridx = 0;
@@ -181,8 +209,8 @@ public class MaFrameConnexion extends JFrame {
                 gbc.gridy = 5;
                 gbc.fill = GridBagConstraints.BOTH;
 
-                String nom = "";
-                String prenom = "";
+                nom = "";
+                prenom = "";
                 try {
                     if (p.getPere() != null) {
                         nom = p.getPere().getNom();
